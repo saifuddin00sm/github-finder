@@ -33,7 +33,8 @@ const NormalLoginForm = ({
   // styles
   const containerStyle = {
     height: "auto",
-    width: "400px",
+    maxWidth: "400px",
+    width: "100%",
     background: "#ffff",
     padding: "20px",
     boxShadow:
