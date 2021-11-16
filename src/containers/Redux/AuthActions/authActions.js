@@ -24,6 +24,13 @@ export const authFailed = (error) => {
 }
 
 
+// set token and name in local storage
+export const setLocalStorage = (token, name) => {
+    localStorage.setItem('token', JSON.stringify(token));
+    localStorage.setItem('name', JSON.stringify(name));
+}
+
+
 // sign in
 export const signIn = (em, password) => async dispatch => {
     dispatch(loadingAuth());
@@ -31,8 +38,7 @@ export const signIn = (em, password) => async dispatch => {
         const user = await signInWithEmailAndPassword(auth, em, password);
         const { displayName, accessToken } = user.user;
 
-        localStorage.setItem('token', JSON.stringify(accessToken));
-        localStorage.setItem('name', JSON.stringify(displayName));
+        setLocalStorage(accessToken, displayName);
 
         dispatch(loadedAuth(accessToken));
     } catch (error) {
@@ -52,8 +58,7 @@ export const signUp = (em, password, name) => async dispatch => {
 
         const { displayName, accessToken } = user.user;
 
-        localStorage.setItem('token', JSON.stringify(accessToken));
-        localStorage.setItem('name', JSON.stringify(displayName));
+        setLocalStorage(accessToken, displayName);
 
         dispatch(loadedAuth(accessToken));
 
@@ -70,8 +75,7 @@ export const socialMediaAccess = (provider) => async dispatch => {
 
         const { accessToken, displayName } = userInfo.user;
 
-        localStorage.setItem('token', JSON.stringify(accessToken));
-        localStorage.setItem('name', JSON.stringify(displayName));
+        setLocalStorage(accessToken, displayName);
 
         dispatch(loadedAuth(accessToken));
 
