@@ -1,25 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import Containers from "./containers/containers";
+import { connect } from "react-redux";
+import { getToken } from "./containers/Redux/AuthActions/authActions";
+import { initialData } from "./containers/Redux/actionType";
+import Header from "./components/Header/Header";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import Login from "./components/Login/Login";
 
-function App() {
+function App({ initialData, error, info, getToken }) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    initialData();
+    getToken();
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (info === null) {
+      navigate("login");
+    } else {
+      navigate("/");
+    }
+    //eslint-disable-next-line
+  }, [info]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Containers />} />
+        <Route path="login" element={<Login error={error} />} />
+      </Routes>
+    </>
   );
 }
 
-export default App;
+const mapToStateProps = state => {
+  return {
+    error: state.authError,
+    info: state.authInfo,
+  };
+};
+
+const mapToDispatchProps = dispatch => {
+  return {
+    initialData: () => dispatch(initialData()),
+    getToken: () => dispatch(getToken()),
+  };
+};
+
+export default connect(mapToStateProps, mapToDispatchProps)(App);
