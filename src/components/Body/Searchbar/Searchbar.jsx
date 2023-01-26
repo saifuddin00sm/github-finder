@@ -67,7 +67,7 @@ const Searchbar = ({ loadData, isloading }) => {
           <div>
             <Input
               size="large"
-              placeholder="Search user"
+              placeholder="Search by username"
               prefix={<SearchOutlined />}
               onChange={e => setValue(e.target.value)}
               value={value}
